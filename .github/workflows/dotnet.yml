@@ -25,10 +25,10 @@ jobs:
       with:
         dotnet-version: 8.0.x
     - name: Restore dependencies
-      run: dotnet restore src/Application/Application.csproj
+      run: dotnet restore ./src/Application/src/RazorPagesTestSample/Application.csproj
       
     - name: Build
-      run: dotnet build src/Application/Application.csproj --no-restore
+      run: dotnet build ./src/Application/src/Application/Application.csproj --no-restore
       
     - name: Test
-      run: dotnet test tests/UnitTests/UnitTests.csproj --no-build --verbosity normal
+      run: dotnet test ./src/Application/tests/UnitTests/UnitTests.csproj --no-build --verbosity normal
