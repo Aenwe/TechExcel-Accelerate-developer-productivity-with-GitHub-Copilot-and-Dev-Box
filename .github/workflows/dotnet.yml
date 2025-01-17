@@ -64,7 +64,7 @@ jobs:
     needs: docker
     environment:
       name: dev
-      url: https://{your_prefix}-dev.azurewebsites.net/
+      url: https://42px542r5w6ic-dev.azurewebsites.net/
     
     steps:
       - name: 'Login via Azure CLI'
