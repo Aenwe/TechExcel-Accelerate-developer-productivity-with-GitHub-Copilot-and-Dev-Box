@@ -43,11 +43,12 @@ jobs:
       with:
         github-token: ${{secrets.GITHUB_TOKEN}}
         script: |
-          let body = "${{ env.build_name }} Workflow Failure \n Build Number: ${{ github.run_number }} \n Build Log: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }} \n SHA: [${{ github.sha }}](https://github.com/${{ github.repository }}/commit/${{ github.sha }}) \n";
+          const { github, context } = require('@actions/github');
+          let body = `${{ env.build_name }} Workflow Failure \n Build Number: ${{ github.run_number }} \n Build Log: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }} \n SHA: *An external link was removed to protect your privacy.* \n`;
           github.issues.create({
             owner: context.repo.owner,
             repo: context.repo.repo,
-            title: "${{ env.build_name }} Workflow ${{ github.run_number }} Failed! ",
+            title: `${{ env.build_name }} Workflow ${{ github.run_number }} Failed!`,
             body: body
           });
   docker:
