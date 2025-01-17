@@ -16,7 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        language: [ 'javascript', 'python' ] # Add other languages as needed
+        language: [ 'javascript', 'python', 'dotnet' ] # Add other languages as needed
 
     steps:
     - name: Checkout repository
