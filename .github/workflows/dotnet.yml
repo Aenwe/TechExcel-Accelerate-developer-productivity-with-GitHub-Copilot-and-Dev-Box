@@ -36,7 +36,7 @@ jobs:
       run: dotnet build ./src/Application/src/RazorPagesTestSample/RazorPagesTestSample.csproj --no-restore
       
     - name: Test
-      run: dotnet test ./src/Application/tests/RazorPagesTestSample.Tests/RazorPagesTestSample.Tests.csproj --no-build --verbosity normal
+      run: dotnet test ./src/Application/tests/RazorPagesTestSample.Tests/RazorPagesTestSample.Tests.csproj --no-build
     - uses: actions/github-script@v6
       if: failure()
       with:
@@ -92,50 +92,50 @@ jobs:
           app-name: '42px542r5w6ic-dev'
           images:  ${{ env.registryName }}.azurecr.io/techexcel/dotnetcoreapp:${{github.run_number}}
 
-  deploy-test:
+  # deploy-test:
   
-    runs-on: ubuntu-latest
-    needs: deploy-dev
-    environment:
-      name: test
-      url: https://42px542r5w6ic-test.azurewebsites.net/
+  #   runs-on: ubuntu-latest
+  #   needs: deploy-dev
+  #   environment:
+  #     name: test
+  #     url: https://42px542r5w6ic-test.azurewebsites.net/
     
-    steps:
-    - uses: actions/checkout@v3
+  #   steps:
+  #   - uses: actions/checkout@v3
     
-    - name: 'Login via Azure CLI'
-      # Log into Azure
-      uses: azure/login@v2.1.1
-      with:
-        client-id: ${{ secrets.AZURE_CLIENT_ID }}
-        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  #   - name: 'Login via Azure CLI'
+  #     # Log into Azure
+  #     uses: azure/login@v2.1.1
+  #     with:
+  #       client-id: ${{ secrets.AZURE_CLIENT_ID }}
+  #       tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+  #       subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-    - uses: azure/webapps-deploy@v2
-      with:
-        app-name: '42px542r5w6ic-test'
-        images: ${{ env.registryName }}.azurecr.io/techexcel/dotnetcoreapp:${{github.run_number}}
+  #   - uses: azure/webapps-deploy@v2
+  #     with:
+  #       app-name: '42px542r5w6ic-test'
+  #       images: ${{ env.registryName }}.azurecr.io/techexcel/dotnetcoreapp:${{github.run_number}}
 
-  deploy-prod:
+  # deploy-prod:
   
-    runs-on: ubuntu-latest
-    needs: deploy-test
-    environment:
-      name: prod
-      url: https://42px542r5w6ic-prod.azurewebsites.net/
+  #   runs-on: ubuntu-latest
+  #   needs: deploy-test
+  #   environment:
+  #     name: prod
+  #     url: https://42px542r5w6ic-prod.azurewebsites.net/
     
-    steps:
-    - uses: actions/checkout@v3
+  #   steps:
+  #   - uses: actions/checkout@v3
     
-    - name: 'Login via Azure CLI'
-      # Log into Azure
-      uses: azure/login@v2.1.1
-      with:
-        client-id: ${{ secrets.AZURE_CLIENT_ID }}
-        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  #   - name: 'Login via Azure CLI'
+  #     # Log into Azure
+  #     uses: azure/login@v2.1.1
+  #     with:
+  #       client-id: ${{ secrets.AZURE_CLIENT_ID }}
+  #       tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+  #       subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-    - uses: azure/webapps-deploy@v2
-      with:
-        app-name: '42px542r5w6ic-prod'
-        images: ${{ env.registryName }}.azurecr.io/techexcel/dotnetcoreapp:${{github.run_number}}
+  #   - uses: azure/webapps-deploy@v2
+  #     with:
+  #       app-name: '42px542r5w6ic-prod'
+  #       images: ${{ env.registryName }}.azurecr.io/techexcel/dotnetcoreapp:${{github.run_number}}
