@@ -54,3 +54,64 @@ jobs:
       run: |
         docker build ${{ env.dockerFolderPath }} -t ${{ env.registryName }}/${{ env.repositoryName }}:${{ env.tag }}
         docker push ${{ env.registryName }}/${{ env.repositoryName }}:${{ env.tag }}
+
+  deploy-dev:
+  
+    runs-on: ubuntu-latest
+    needs: docker
+    environment:
+      name: dev
+      url: https://{your_prefix}-dev.azurewebsites.net/
+    
+    steps:
+      - name: 'Login via Azure CLI'
+        uses: azure/login@v2.1.1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - uses: azure/webapps-deploy@v2
+        with:
+          app-name: '42px542r5w6ic-dev'
+          images:  ${{ env.registryName }}.azurecr.io/techexcel/dotnetcoreapp:${{github.run_number}}
+
+  deploy-test:
+  
+    runs-on: ubuntu-latest
+    needs: deploy-dev
+    environment:
+      name: test
+      url: https://42px542r5w6ic-test.azurewebsites.net/
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: 'Login via Azure CLI'
+      uses: azure/login@v2.1.1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - uses: azure/webapps-deploy@v2
+      with:
+        app-name: '42px542r5w6ic-test'
+        images: ${{ env.registryName }}.azurecr.io/techexcel/dotnetcoreapp:${{github.run_number}}
+
+  deploy-prod:
+  
+    runs-on: ubuntu-latest
+    needs: deploy-test
+    environment:
+      name: prod
+      url: https://42px542r5w6ic-prod.azurewebsites.net/
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: 'Login via Azure CLI'
+      uses: azure/login@v2.1.1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - uses: azure/webapps-deploy@v2
+      with:
+        app-name: '42px542r5w6ic-prod'
+        images: ${{ env.registryName }}.azurecr.io/techexcel/dotnetcoreapp:${{github.run_number}}
