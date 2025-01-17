@@ -20,4 +20,3 @@ COPY --from=build-env /app/out .
 
 # Set the entry point for the application
 ENTRYPOINT ["dotnet", "RazorPagesTestSample.dll"]
-
