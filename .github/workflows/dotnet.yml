@@ -4,6 +4,7 @@
 name: .NET
 
 on:
+  workflow_dispatch:
   push:
     branches: [ "main" ]
     paths:
@@ -36,7 +37,7 @@ jobs:
       run: dotnet build ./src/Application/src/RazorPagesTestSample/RazorPagesTestSample.csproj --no-restore
       
     - name: Test
-      run: dotnet test ./src/Application/tests/RazorPagesTestSample.Tests/RazorPagesTestSample.Tests.csproj --no-build
+      run: dotnet test --verbosity normal ./src/Application/tests/RazorPagesTestSample.Tests/RazorPagesTestSample.Tests.csproj
     - uses: actions/github-script@v6
       if: failure()
       with:
